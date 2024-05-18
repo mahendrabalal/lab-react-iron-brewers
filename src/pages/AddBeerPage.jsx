@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useState } from "react";
 
 function AddBeerPage() {
@@ -28,6 +29,29 @@ function AddBeerPage() {
   // 2. Use axios to make a POST request to the Beers API.
   // 3. Once the beer is created, navigate the user to the page showing the list of all beers.
 
+  const handleButton = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(
+        "https://ih-beers-api2.herokuapp.com/beers/new",
+        {
+          name,
+          tagline,
+          description,
+          image_url: imageUrl,
+          first_brewed: firstBrewed,
+          brewers_tips: brewersTips,
+          attenuation_level: attenuationLevel,
+          contributed_by: contributedBy,
+        }
+      );
+      console.log("Beer added successfully:", response.data);
+      // Redirect to the page showing the list of all beers
+      window.location.href = "/beers";
+    } catch (error) {
+      console.error("Error adding beer:", error);
+    }
+  };
 
 
   // Structure and the content of the page showing the form for adding a new beer. You can leave this as it is.
@@ -122,7 +146,7 @@ function AddBeerPage() {
             value={contributedBy}
             onChange={handleContributedBy}
           />
-          <button className="btn btn-primary btn-round">Add Beer</button>
+          <button className="btn btn-primary btn-round" onClick={handleButton}>Add Beer</button>
         </form>
       </div>
     </>
